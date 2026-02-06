@@ -30,9 +30,11 @@
     function setHiddenPrechatFields() {
         try {
             embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-                Chat_Source: 'ITK',
+                Chat_Source: 'ENHO',
                 Persona: 'Installer',
-                Site_Type: 'Storage'
+                Site_Type: 'Storage',
+                Referring_Site: 'ENHO Mobile',
+                Country: 'UK'
             });
         } catch (e) {
             console.error('Prechat error:', e);
