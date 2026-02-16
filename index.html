@@ -4,53 +4,22 @@
     <meta charset="UTF-8">
     <title>NA Messaging Chat - UAT</title>
 
-    <!-- ========================= -->
-    <!-- FORCE BRANDING OVERRIDE -->
-    <!-- ========================= -->
     <style>
-        /* Initial safety override */
-        :root {
+        /* Safety defaults (won’t win alone) */
+        embedded-messaging {
             --branding-primary: #005290 !important;
             --branding-primary-dark: #003a6f !important;
-            --slds-g-color-brand-base-60: #005290 !important;
-            --slds-g-color-brand-base-50: #005290 !important;
         }
 
-        /* Header hard override */
-        .embeddedMessagingConversationHeader,
-        .embeddedMessagingConversationHeader * {
-            background-color: #005290 !important;
-            color: #ffffff !important;
-        }
-
-        /* Launcher button */
-        .embeddedMessagingLauncherButton {
-            background-color: #005290 !important;
-        }
-
-        /* Chat body */
-        .embeddedMessagingConversation {
-            background-color: #f4f6f9 !important;
-        }
-
-        /* Agent message */
-        .embeddedMessagingMessage--agent {
-            background-color: #e3f2fd !important;
-            color: #000000 !important;
-            border-radius: 12px !important;
-        }
-
-        /* User message */
+        /* Message bubbles */
         .embeddedMessagingMessage--user {
             background-color: #005290 !important;
             color: #ffffff !important;
-            border-radius: 12px !important;
         }
 
-        /* Input area */
-        .embeddedMessagingComposer {
-            background-color: #ffffff !important;
-            border-top: 1px solid #d8dde6 !important;
+        .embeddedMessagingMessage--agent {
+            background-color: #e3f2fd !important;
+            color: #000000 !important;
         }
     </style>
 </head>
@@ -59,69 +28,47 @@
 
 <h3>Chat Support NA - UAT</h3>
 
-<!-- ========================= -->
-<!-- Embedded Messaging Logic -->
-<!-- ========================= -->
-<script type="text/javascript">
+<script>
     function initEmbeddedMessaging() {
         try {
             embeddedservice_bootstrap.settings.language = 'en_US';
 
             embeddedservice_bootstrap.init(
-                '00DDh0000003ik2', // Org Id
-                'NA_Messaging_Chat', // Messaging Deployment
+                '00DDh0000003ik2',
+                'NA_Messaging_Chat',
                 'https://enphase--uat.sandbox.my.site.com/ESWNAMessagingChat1755609473327',
                 {
                     scrt2URL: 'https://enphase--uat.sandbox.my.salesforce-scrt.com'
                 }
             );
         } catch (err) {
-            console.error('Embedded Messaging init error:', err);
+            console.error(err);
         }
     }
 
     function setHiddenPrechatFields() {
-        try {
-            embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-                Chat_Source: 'ENHO',
-                Persona: 'Homeowner',
-                Site_Type: 'Solar',
-                Referring_Site: 'ENHO Mobile',
-                Country: 'UK'
-            });
-        } catch (e) {
-            console.error('Prechat error:', e);
-        }
+        embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+            Chat_Source: 'ENHO',
+            Persona: 'Homeowner',
+            Site_Type: 'Solar',
+            Referring_Site: 'ENHO Mobile',
+            Country: 'UK'
+        });
     }
 
-    /* MUST override branding AFTER widget loads */
+    /* 🔥 THE KEY PART 🔥 */
     window.addEventListener('onEmbeddedMessagingReady', function () {
         setHiddenPrechatFields();
 
-        const style = document.createElement('style');
-        style.innerHTML = `
-            :root {
-                --branding-primary: #005290 !important;
-                --branding-primary-dark: #003a6f !important;
-                --slds-g-color-brand-base-60: #005290 !important;
-                --slds-g-color-brand-base-50: #005290 !important;
-            }
-
-            .embeddedMessagingConversationHeader,
-            .embeddedMessagingConversationHeader * {
-                background-color: #005290 !important;
-                color: #ffffff !important;
-            }
-        `;
-        document.head.appendChild(style);
+        const em = document.querySelector('embedded-messaging');
+        if (em) {
+            em.style.setProperty('--branding-primary', '#005290');
+            em.style.setProperty('--branding-primary-dark', '#003a6f');
+        }
     });
 </script>
 
-<!-- ========================= -->
-<!-- Embedded Messaging SDK -->
-<!-- ========================= -->
 <script
-    type="text/javascript"
     src="https://enphase--uat.sandbox.my.site.com/ESWNAMessagingChat1755609473327/assets/js/bootstrap.min.js"
     onload="initEmbeddedMessaging()">
 </script>
