@@ -3,20 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>NA Messaging Chat - UAT</title>
+
+    <!-- ========================= -->
+    <!-- Embedded Messaging CSS -->
+    <!-- ========================= -->
+    <style>
+        /* Global font */
+        embedded-messaging,
+        embedded-messaging * {
+            font-family: "Salesforce Sans", Arial, sans-serif !important;
+        }
+
+        /* Launcher Button */
+        .embeddedMessagingLauncherButton {
+            background-color: #005290 !important;
+        }
+
+        /* Conversation Header */
+        .embeddedMessagingConversationHeader {
+            background-color: #005290 !important;
+            color: #ffffff !important;
+        }
+
+        .embeddedMessagingConversationHeader h2,
+        .embeddedMessagingConversationHeader span {
+            color: #ffffff !important;
+        }
+
+        /* Chat body background */
+        .embeddedMessagingConversation {
+            background-color: #f4f6f9 !important;
+        }
+
+        /* Agent message bubble */
+        .embeddedMessagingMessage--agent {
+            background-color: #e3f2fd !important;
+            color: #000000 !important;
+            border-radius: 12px !important;
+        }
+
+        /* User message bubble */
+        .embeddedMessagingMessage--user {
+            background-color: #005290 !important;
+            color: #ffffff !important;
+            border-radius: 12px !important;
+        }
+
+        /* Message input area */
+        .embeddedMessagingComposer {
+            background-color: #ffffff !important;
+            border-top: 1px solid #d8dde6 !important;
+        }
+
+        /* Send button */
+        .embeddedMessagingComposer button {
+            background-color: #005290 !important;
+            color: #ffffff !important;
+        }
+    </style>
 </head>
 
 <body>
 
 <h3>Chat Support NA - UAT</h3>
 
+<!-- ========================= -->
+<!-- Embedded Messaging JS -->
+<!-- ========================= -->
 <script type="text/javascript">
     function initEmbeddedMessaging() {
         try {
             embeddedservice_bootstrap.settings.language = 'en_US';
 
             embeddedservice_bootstrap.init(
-                '00DDh0000003ik2', // Org Id (UAT)
-                'NA_Messaging_Chat', // Messaging Deployment
+                '00DDh0000003ik2',                 // Org Id (UAT)
+                'NA_Messaging_Chat',               // Messaging Deployment
                 'https://enphase--uat.sandbox.my.site.com/ESWNAMessagingChat1755609473327',
                 {
                     scrt2URL: 'https://enphase--uat.sandbox.my.salesforce-scrt.com'
@@ -41,11 +102,16 @@
         }
     }
 
+    /* Ensure prechat + CSS apply after widget is ready */
     window.addEventListener('onEmbeddedMessagingReady', function () {
         setHiddenPrechatFields();
+        console.log('Embedded Messaging Ready');
     });
 </script>
 
+<!-- ========================= -->
+<!-- Embedded Messaging SDK -->
+<!-- ========================= -->
 <script
     type="text/javascript"
     src="https://enphase--uat.sandbox.my.site.com/ESWNAMessagingChat1755609473327/assets/js/bootstrap.min.js"
