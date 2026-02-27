@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Embedded Messaging – Dark Mode V2</title>
+    <title>Embedded Messaging – Dark Mode Debug</title>
 
-    <!-- Global dark variables -->
+    <!-- CSS safety layer -->
     <style>
         embedded-messaging {
             --branding-primary: #000000;
             --branding-primary-dark: #000000;
             --branding-accent: #ffffff;
 
-            /* Text tokens */
             --slds-g-color-neutral-base-100: #ffffff;
             --slds-g-color-neutral-base-90: #ffffff;
             --slds-g-color-neutral-base-10: #000000;
@@ -21,14 +20,31 @@
 
 <body>
 
-<h3>Embedded Messaging – Dark Mode V2</h3>
+<h3>Embedded Messaging – Dark Mode Debug</h3>
 
 <script>
+/* -------------------------------
+   LOGGER
+-------------------------------- */
+function log(title, data) {
+    console.group(title);
+    try {
+        console.log(JSON.parse(JSON.stringify(data)));
+    } catch (e) {
+        console.log(data);
+    }
+    console.groupEnd();
+}
+
+/* -------------------------------
+   INIT (BEFORE)
+-------------------------------- */
 function initEmbeddedMessaging() {
     try {
+        console.log('🚀 BEFORE INIT');
+
         embeddedservice_bootstrap.settings.language = 'en_US';
 
-        /* 🔥 Dark branding (SUPPORTED) */
         embeddedservice_bootstrap.settings.branding = {
             primaryColor: '#000000',
             primaryColorDark: '#000000',
@@ -47,6 +63,8 @@ function initEmbeddedMessaging() {
             userBubbleTextColor: '#ffffff'
         };
 
+        log('🔹 settings (before init)', embeddedservice_bootstrap.settings);
+
         embeddedservice_bootstrap.init(
             '00DDh0000003ik2',
             'NA_Messaging_Chat',
@@ -55,19 +73,42 @@ function initEmbeddedMessaging() {
                 scrt2URL: 'https://enphase--uat.sandbox.my.salesforce-scrt.com'
             }
         );
-    } catch (e) {
-        console.error(e);
+
+    } catch (err) {
+        console.error('❌ init error', err);
     }
 }
 
-/* 🔒 Shadow DOM patch (BEST POSSIBLE) */
+/* -------------------------------
+   READY (AFTER)
+-------------------------------- */
 window.addEventListener('onEmbeddedMessagingReady', () => {
-    const em = document.querySelector('embedded-messaging');
-    if (!em || !em.shadowRoot) return;
+    console.log('✅ AFTER READY');
 
+    /* LOG ALL AVAILABLE OBJECTS */
+    log('🎨 brandingData (after)', embeddedservice_bootstrap.brandingData);
+    log('⚙️ settings (after)', embeddedservice_bootstrap.settings);
+    log('💬 conversationAPI', embeddedservice_bootstrap.conversationAPI);
+
+    const em = document.querySelector('embedded-messaging');
+    if (!em) {
+        console.warn('❌ embedded-messaging not found');
+        return;
+    }
+
+    console.log('🔍 embedded-messaging element:', em);
+
+    if (!em.shadowRoot) {
+        console.warn('❌ Shadow root NOT accessible');
+        return;
+    }
+
+    console.log('🌑 shadowRoot accessible');
+
+    /* APPLY MAX DARK PATCH */
     const style = document.createElement('style');
     style.textContent = `
-        /* Chat body perception */
+        /* TRY TO FORCE CHAT BODY */
         .embeddedMessagingConversation {
             background: #111 !important;
         }
@@ -87,8 +128,8 @@ window.addEventListener('onEmbeddedMessagingReady', () => {
         /* Composer */
         textarea,
         input {
-            color: #fff !important;
             background: #000 !important;
+            color: #fff !important;
         }
 
         /* Icons */
@@ -97,6 +138,19 @@ window.addEventListener('onEmbeddedMessagingReady', () => {
         }
     `;
     em.shadowRoot.appendChild(style);
+
+    console.log('✅ Dark patch injected');
+
+    /* FINAL PROOF – INSPECT BACKGROUND */
+    const convo = em.shadowRoot.querySelector('.embeddedMessagingConversation');
+    if (convo) {
+        console.log(
+            '🧪 Chat background (computed):',
+            getComputedStyle(convo).backgroundColor
+        );
+    } else {
+        console.warn('❌ Conversation container not found');
+    }
 });
 </script>
 
