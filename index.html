@@ -2,72 +2,107 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>NA Messaging Chat - UAT</title>
+    <title>Embedded Messaging – Branding Debug</title>
 
     <style>
-        /* Safety defaults (won’t win alone) */
         embedded-messaging {
-            --branding-primary: #005290 !important;
-            --branding-primary-dark: #003a6f !important;
-        }
-
-        /* Message bubbles */
-        .embeddedMessagingMessage--user {
-            background-color: #005290 !important;
-            color: #ffffff !important;
-        }
-
-        .embeddedMessagingMessage--agent {
-            background-color: #e3f2fd !important;
-            color: #000000 !important;
+            --branding-primary: #005290;
+            --branding-primary-dark: #003a6f;
         }
     </style>
 </head>
 
 <body>
 
-<h3>Chat Support NA - UAT</h3>
+<h3>Embedded Messaging – Console Debug</h3>
 
 <script>
-    function initEmbeddedMessaging() {
-        try {
-            embeddedservice_bootstrap.settings.language = 'en_US';
- console.log('branding data', embeddedservice_bootstrap.brandingData);
-            embeddedservice_bootstrap.init(
-                '00DDh0000003ik2',
-                'NA_Messaging_Chat',
-                'https://enphase--uat.sandbox.my.site.com/ESWNAMessagingChat1755609473327',
-                {
-                    scrt2URL: 'https://enphase--uat.sandbox.my.salesforce-scrt.com'
-                }
-            );
-
-           
-        } catch (err) {
-            console.error(err);
-        }
+/* --------------------------------------------------------
+   GLOBAL DEBUG LOGGER
+--------------------------------------------------------- */
+function log(label, obj) {
+    try {
+        console.group(label);
+        console.log(JSON.parse(JSON.stringify(obj)));
+        console.groupEnd();
+    } catch (e) {
+        console.group(label);
+        console.log(obj);
+        console.groupEnd();
     }
+}
 
-    function setHiddenPrechatFields() {
-        embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-            Chat_Source: 'ENHO',
-            Persona: 'Homeowner',
-            Site_Type: 'Solar',
-            Referring_Site: 'ENHO Mobile',
-            Country: 'UK'
-        });
+/* --------------------------------------------------------
+   INIT
+--------------------------------------------------------- */
+function initEmbeddedMessaging() {
+    try {
+        console.log('🚀 Initializing Embedded Messaging...');
+
+        embeddedservice_bootstrap.settings.language = 'en_US';
+
+        /* LOG SETTINGS BEFORE INIT */
+        log('🔹 settings (before init)', embeddedservice_bootstrap.settings);
+
+        embeddedservice_bootstrap.init(
+            '00DDh0000003ik2',
+            'NA_Messaging_Chat',
+            'https://enphase--uat.sandbox.my.site.com/ESWNAMessagingChat1755609473327',
+            {
+                scrt2URL: 'https://enphase--uat.sandbox.my.salesforce-scrt.com'
+            }
+        );
+    } catch (err) {
+        console.error('❌ init error', err);
     }
+}
 
-    /* 🔥 THE KEY PART 🔥 */
-    window.addEventListener('onEmbeddedMessagingReady', function () {
-        setHiddenPrechatFields();
+/* --------------------------------------------------------
+   READY EVENT – THIS IS WHERE EVERYTHING IS AVAILABLE
+--------------------------------------------------------- */
+window.addEventListener('onEmbeddedMessagingReady', () => {
 
-        const em = document.querySelector('embedded-messaging');
-        if (em) {
-            em.style.setProperty('--branding-primary', '#005290');
-            em.style.setProperty('--branding-primary-dark', '#003a6f');
-        }
-    });
+    console.log('✅ Embedded Messaging Ready');
+
+    /* CORE OBJECTS */
+    log('🔹 embeddedservice_bootstrap', embeddedservice_bootstrap);
+
+    log('🔹 settings (after init)', embeddedservice_bootstrap.settings);
+
+    /* BRANDING */
+    log('🎨 brandingData', embeddedservice_bootstrap.brandingData);
+
+    /* PRECHAT */
+    log('💬 prechatAPI', embeddedservice_bootstrap.prechatAPI);
+
+    /* CONVERSATION */
+    log('🧵 conversationAPI', embeddedservice_bootstrap.conversationAPI);
+
+    /* EVENT API */
+    log('📡 eventAPI', embeddedservice_bootstrap.eventAPI);
+
+    /* INTERNAL STATE (may be undefined) */
+    log('🧠 internalState', embeddedservice_bootstrap.internalState);
+
+    /* SHADOW DOM INSPECTION */
+    const em = document.querySelector('embedded-messaging');
+    if (em && em.shadowRoot) {
+        console.group('🌑 Shadow DOM');
+        console.log(em.shadowRoot);
+        console.groupEnd();
+    } else {
+        console.warn('⚠️ Shadow root not accessible yet');
+    }
+});
+
+/* --------------------------------------------------------
+   EXTRA SAFETY LOGGING
+--------------------------------------------------------- */
+window.addEventListener('message', (event) => {
+    if (event?.data?.method || event?.data?.type) {
+        console.log('📨 postMessage event:', event.data);
+    }
+});
 </script>
 
 <script
