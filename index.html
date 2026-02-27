@@ -2,46 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Embedded Messaging – Branding Debug</title>
+    <title>Embedded Messaging – Dark Theme</title>
 
+    <!-- CSS variable safety layer -->
     <style>
         embedded-messaging {
-            --branding-primary: #005290;
-            --branding-primary-dark: #003a6f;
+            --branding-primary: #000000;
+            --branding-primary-dark: #000000;
+            --branding-accent: #ffffff;
+            --branding-text-color: #ffffff;
+            --branding-background: #000000;
         }
     </style>
 </head>
 
 <body>
 
-<h3>Embedded Messaging – Console Debug</h3>
+<h3>Embedded Messaging – Dark Theme</h3>
 
 <script>
-/* --------------------------------------------------------
-   GLOBAL DEBUG LOGGER
---------------------------------------------------------- */
+/* -------------------------------------------
+   UTILITY LOGGER
+-------------------------------------------- */
 function log(label, obj) {
+    console.group(label);
     try {
-        console.group(label);
         console.log(JSON.parse(JSON.stringify(obj)));
-        console.groupEnd();
     } catch (e) {
-        console.group(label);
         console.log(obj);
-        console.groupEnd();
     }
+    console.groupEnd();
 }
 
-/* --------------------------------------------------------
-   INIT
---------------------------------------------------------- */
+/* -------------------------------------------
+   INIT WITH DARK BRANDING
+-------------------------------------------- */
 function initEmbeddedMessaging() {
     try {
-        console.log('🚀 Initializing Embedded Messaging...');
-
         embeddedservice_bootstrap.settings.language = 'en_US';
 
-        /* LOG SETTINGS BEFORE INIT */
+        /* ✅ DARK THEME BRANDING */
+        embeddedservice_bootstrap.settings.branding = {
+            /* Core */
+            primaryColor: '#000000',
+            primaryColorDark: '#000000',
+            secondaryColor: '#000000',
+
+            /* Header */
+            headerBackgroundColor: '#000000',
+            headerTextColor: '#ffffff',
+
+            /* Launcher */
+            launcherBackgroundColor: '#000000',
+            launcherTextColor: '#ffffff',
+
+            /* Chat bubbles */
+            agentBubbleBackgroundColor: '#000000',
+            agentBubbleTextColor: '#ffffff',
+            userBubbleBackgroundColor: '#000000',
+            userBubbleTextColor: '#ffffff',
+
+            /* Accent / Icons */
+            accentColor: '#ffffff',
+
+            /* System / Labels */
+            systemMessageTextColor: '#ffffff',
+            systemMessageBackgroundColor: '#000000'
+        };
+
+        /* LOG BEFORE INIT */
         log('🔹 settings (before init)', embeddedservice_bootstrap.settings);
 
         embeddedservice_bootstrap.init(
@@ -53,54 +82,27 @@ function initEmbeddedMessaging() {
             }
         );
     } catch (err) {
-        console.error('❌ init error', err);
+        console.error('Init error', err);
     }
 }
 
-/* --------------------------------------------------------
-   READY EVENT – THIS IS WHERE EVERYTHING IS AVAILABLE
---------------------------------------------------------- */
+/* -------------------------------------------
+   READY EVENT – VERIFY APPLIED BRANDING
+-------------------------------------------- */
 window.addEventListener('onEmbeddedMessagingReady', () => {
-
     console.log('✅ Embedded Messaging Ready');
 
-    /* CORE OBJECTS */
-    log('🔹 embeddedservice_bootstrap', embeddedservice_bootstrap);
+    /* FINAL BRANDING DATA */
+    log('🎨 brandingData (final)', embeddedservice_bootstrap.brandingData);
 
-    log('🔹 settings (after init)', embeddedservice_bootstrap.settings);
-
-    /* BRANDING */
-    log('🎨 brandingData', embeddedservice_bootstrap.brandingData);
-
-    /* PRECHAT */
-    log('💬 prechatAPI', embeddedservice_bootstrap.prechatAPI);
-
-    /* CONVERSATION */
-    log('🧵 conversationAPI', embeddedservice_bootstrap.conversationAPI);
-
-    /* EVENT API */
-    log('📡 eventAPI', embeddedservice_bootstrap.eventAPI);
-
-    /* INTERNAL STATE (may be undefined) */
-    log('🧠 internalState', embeddedservice_bootstrap.internalState);
-
-    /* SHADOW DOM INSPECTION */
+    /* Shadow DOM variable enforcement (extra safety) */
     const em = document.querySelector('embedded-messaging');
-    if (em && em.shadowRoot) {
-        console.group('🌑 Shadow DOM');
-        console.log(em.shadowRoot);
-        console.groupEnd();
-    } else {
-        console.warn('⚠️ Shadow root not accessible yet');
-    }
-});
-
-/* --------------------------------------------------------
-   EXTRA SAFETY LOGGING
---------------------------------------------------------- */
-window.addEventListener('message', (event) => {
-    if (event?.data?.method || event?.data?.type) {
-        console.log('📨 postMessage event:', event.data);
+    if (em) {
+        em.style.setProperty('--branding-primary', '#000000');
+        em.style.setProperty('--branding-primary-dark', '#000000');
+        em.style.setProperty('--branding-accent', '#ffffff');
+        em.style.setProperty('--branding-text-color', '#ffffff');
+        em.style.setProperty('--branding-background', '#000000');
     }
 });
 </script>
