@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Embedded Messaging – Forced Dark Mode</title>
+  <meta charset="UTF-8" />
+  <title>Embedded Messaging – Dark Mode (SLDS Override)</title>
 </head>
 
 <body>
 <h3>Chat Support – Forced Dark Mode</h3>
 
 <script>
-/* =================================================
+/* =====================================================
    INIT EMBEDDED MESSAGING
-================================================= */
+===================================================== */
 function initEmbeddedMessaging() {
   try {
     embeddedservice_bootstrap.settings.language = 'en_US';
@@ -25,13 +25,13 @@ function initEmbeddedMessaging() {
       }
     );
   } catch (e) {
-    console.error('❌ Init error', e);
+    console.error('Init error', e);
   }
 }
 
-/* =================================================
+/* =====================================================
    PRECHAT HIDDEN FIELDS
-================================================= */
+===================================================== */
 function setHiddenPrechatFields() {
   embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
     Chat_Source: 'ENHO',
@@ -42,25 +42,36 @@ function setHiddenPrechatFields() {
   });
 }
 
-/* =================================================
-   🔥 PRECHAT DARK MODE (FIXES WHITE FORM)
-================================================= */
+/* =====================================================
+   🔥 PRECHAT DARK MODE (SLDS TOKEN OVERRIDE)
+===================================================== */
 function injectPrechatDarkMode() {
   const em = document.querySelector('embedded-messaging');
-  if (!em?.shadowRoot) return;
+  if (!em || !em.shadowRoot) return;
 
   const prechat = em.shadowRoot.querySelector('embeddedmessaging-prechat-state');
-  if (!prechat?.shadowRoot) return;
+  if (!prechat || !prechat.shadowRoot) return;
 
   if (prechat.shadowRoot.querySelector('#dark-prechat-style')) return;
 
-  console.log('🌙 Dark mode applied to PRECHAT');
+  console.log('🌙 Pre-chat SLDS dark mode applied');
 
   const style = document.createElement('style');
   style.id = 'dark-prechat-style';
   style.textContent = `
-    /* ROOT + ALL LAYOUT WRAPPERS */
-    :host,
+    /* 🔥 OVERRIDE SLDS BACKGROUND TOKENS (ROOT CAUSE FIX) */
+    :host {
+      --slds-g-color-neutral-base-100: #000000;
+      --slds-g-color-neutral-base-95:  #000000;
+      --slds-g-color-neutral-base-90:  #000000;
+      --slds-g-color-neutral-base-80:  #000000;
+
+      --slds-g-color-neutral-base-10:  #ffffff;
+      --slds-g-color-neutral-base-20:  #ffffff;
+      --slds-g-color-neutral-base-30:  #ffffff;
+    }
+
+    /* REMOVE WHITE PAINTED BACKGROUNDS */
     .containerArea,
     section,
     article,
@@ -69,12 +80,12 @@ function injectPrechatDarkMode() {
     lightning-layout-item,
     lightning-card,
     [class*="slds"] {
-      background-color: #000 !important;
+      background: transparent !important;
       color: #fff !important;
     }
 
-    /* HEADINGS & LABELS */
-    h1, h2, h3, p, span, label {
+    /* TEXT */
+    label, span, p, h1, h2, h3 {
       color: #fff !important;
     }
 
@@ -82,19 +93,18 @@ function injectPrechatDarkMode() {
     input,
     textarea,
     select {
-      background-color: #000 !important;
+      background: #000 !important;
       color: #fff !important;
       border: 1px solid #555 !important;
     }
 
-    /* PLACEHOLDER */
     ::placeholder {
       color: #aaa !important;
     }
 
     /* BUTTON */
     button {
-      background-color: #111 !important;
+      background: #111 !important;
       color: #fff !important;
       border: 1px solid #555 !important;
     }
@@ -103,16 +113,16 @@ function injectPrechatDarkMode() {
   prechat.shadowRoot.appendChild(style);
 }
 
-/* =================================================
+/* =====================================================
    🔥 CHAT CONVERSATION DARK MODE
-================================================= */
+===================================================== */
 function injectChatDarkMode() {
   const em = document.querySelector('embedded-messaging');
-  if (!em?.shadowRoot) return;
+  if (!em || !em.shadowRoot) return;
 
   if (em.shadowRoot.querySelector('#dark-chat-style')) return;
 
-  console.log('🌙 Dark mode applied to CHAT');
+  console.log('🌙 Chat dark mode applied');
 
   const style = document.createElement('style');
   style.id = 'dark-chat-style';
@@ -159,20 +169,19 @@ function injectChatDarkMode() {
   em.shadowRoot.appendChild(style);
 }
 
-/* =================================================
+/* =====================================================
    RETRY UNTIL SALESFORCE FINISHES RENDERING
-================================================= */
+===================================================== */
 const darkRetry = setInterval(() => {
   injectPrechatDarkMode();
   injectChatDarkMode();
 }, 500);
 
-/* Stop retries after SF UI is stable */
 setTimeout(() => clearInterval(darkRetry), 12000);
 
-/* =================================================
+/* =====================================================
    READY EVENT
-================================================= */
+===================================================== */
 window.addEventListener('onEmbeddedMessagingReady', () => {
   console.log('✅ Embedded Messaging Ready');
   setHiddenPrechatFields();
