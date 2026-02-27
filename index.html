@@ -32,7 +32,7 @@
     function initEmbeddedMessaging() {
         try {
             embeddedservice_bootstrap.settings.language = 'en_US';
-
+ console.log('branding data', embeddedservice_bootstrap.brandingData);
             embeddedservice_bootstrap.init(
                 '00DDh0000003ik2',
                 'NA_Messaging_Chat',
@@ -42,7 +42,7 @@
                 }
             );
 
-            console.log('branding data', embeddedservice_bootstrap.brandingData);
+           
         } catch (err) {
             console.error(err);
         }
