@@ -272,6 +272,17 @@
                 // Configure language
                 embeddedservice_bootstrap.settings.language = 'en_US';
                 
+                // Set hidden pre-chat fields for In-App Messaging
+                embeddedservice_bootstrap.settings.hiddenPrechatFields = {
+                    Chat_Source: 'ENHO',
+                    Persona: 'Homeowner',
+                    Site_Type: 'Solar',
+                    Referring_Site: 'ENHO Web',
+                    Country: 'UK'
+                };
+                
+                console.log('Hidden fields configured:', embeddedservice_bootstrap.settings.hiddenPrechatFields);
+                
                 // Initialize Embedded Messaging
                 embeddedservice_bootstrap.init(
                     '00Dbf000005CU2f',
@@ -281,20 +292,6 @@
                         scrt2URL: 'https://enphase--sbprashant.sandbox.my.salesforce-scrt.com'
                     }
                 );
-                
-                // Set hidden fields after initialization
-                setTimeout(() => {
-                    if (embeddedservice_bootstrap.prechatAPI) {
-                        embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-                            Chat_Source: 'ENHO',
-                            Persona: 'Homeowner',
-                            Site_Type: 'Solar',
-                            Referring_Site: 'ENHO Web',
-                            Country: 'UK'
-                        });
-                        console.log('Hidden pre-chat fields set successfully');
-                    }
-                }, 1000);
                 
                 console.log('Embedded Messaging initialized successfully');
             } catch (err) {
