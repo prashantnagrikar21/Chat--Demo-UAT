@@ -59,6 +59,29 @@
             background-color: #000000 !important;
         }
 
+        /* Modal and Content Areas */
+        .embeddedMessagingFrame .slds-modal__content,
+        .embeddedMessagingFrame .slds-p-around_medium,
+        .embeddedMessagingFrame .slds-card,
+        .embeddedMessagingFrame .slds-card__body,
+        .embeddedMessagingFrame .modalContent {
+            background-color: #000000 !important;
+        }
+
+        /* All text elements */
+        .embeddedMessagingFrame,
+        .embeddedMessagingFrame * {
+            color: #FFFFFF !important;
+        }
+
+        /* Override for specific elements that should be black text */
+        .embeddedMessagingFrame .slds-chat-message__text_outbound,
+        .embeddedMessagingFrame .slds-chat-message__text_outbound *,
+        .embeddedMessagingFrame button,
+        .embeddedMessagingFrame button * {
+            color: #000000 !important;
+        }
+
         /* Header */
         .embeddedMessagingFrame .slds-chat-header,
         .embeddedMessagingFrame header {
@@ -139,6 +162,18 @@
             background-color: #EEEEEE !important;
         }
 
+        /* Start Conversation Button */
+        .embeddedMessagingFrame .slds-button_stretch,
+        .embeddedMessagingFrame button.slds-button {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+        }
+
+        .embeddedMessagingFrame .slds-button_stretch:hover,
+        .embeddedMessagingFrame button.slds-button:hover {
+            background-color: #EEEEEE !important;
+        }
+
         /* All Buttons */
         .embeddedMessagingFrame button,
         .embeddedMessagingFrame .slds-button {
@@ -195,14 +230,42 @@
 
         /* Pre-chat Form */
         .embeddedMessagingFrame .slds-form-element__label,
-        .embeddedMessagingFrame label {
+        .embeddedMessagingFrame label,
+        .embeddedMessagingFrame .slds-form-element label {
             color: #FFFFFF !important;
         }
 
-        .embeddedMessagingFrame .slds-form-element__control input {
+        .embeddedMessagingFrame .slds-form-element__control input,
+        .embeddedMessagingFrame .slds-input,
+        .embeddedMessagingFrame input[type="email"],
+        .embeddedMessagingFrame .slds-form-element input {
             background-color: #1A1A1A !important;
             color: #FFFFFF !important;
             border: 1px solid #333333 !important;
+        }
+
+        .embeddedMessagingFrame .slds-form-element__control input:focus,
+        .embeddedMessagingFrame .slds-input:focus {
+            background-color: #1A1A1A !important;
+            color: #FFFFFF !important;
+            border-color: #FFFFFF !important;
+        }
+
+        /* Pre-chat Form Container */
+        .embeddedMessagingFrame .slds-form,
+        .embeddedMessagingFrame .slds-form-element,
+        .embeddedMessagingFrame .prechatUI {
+            background-color: #000000 !important;
+        }
+
+        /* Required Field Asterisk */
+        .embeddedMessagingFrame .slds-required {
+            color: #FF6B6B !important;
+        }
+
+        /* Form Help Text */
+        .embeddedMessagingFrame .slds-form-element__help {
+            color: #999999 !important;
         }
 
         /* File Attachments */
