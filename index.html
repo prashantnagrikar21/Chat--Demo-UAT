@@ -1,197 +1,305 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Embedded Messaging – Dark Mode (SLDS Override)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Messaging - Dark Mode</title>
+    <style>
+        /* Page Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #000000;
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #CCCCCC;
+        }
+
+        /* Dark Mode Styles for Embedded Messaging */
+        
+        /* Chat Button */
+        .embeddedMessagingConversationButton {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+            border: 2px solid #FFFFFF !important;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2) !important;
+        }
+
+        .embeddedMessagingConversationButton:hover {
+            background-color: #EEEEEE !important;
+            transform: translateY(-2px);
+        }
+
+        /* Chat Window Container */
+        .embeddedMessagingFrame,
+        .embeddedMessagingFrame iframe {
+            background-color: #000000 !important;
+        }
+
+        /* Override Salesforce default styles */
+        .slds-template__container,
+        .slds-template__content {
+            background-color: #000000 !important;
+        }
+
+        /* Header */
+        .embeddedMessagingFrame .slds-chat-header,
+        .embeddedMessagingFrame header {
+            background-color: #000000 !important;
+            color: #FFFFFF !important;
+            border-bottom: 1px solid #333333 !important;
+        }
+
+        /* Header Text */
+        .embeddedMessagingFrame .slds-chat-header h2,
+        .embeddedMessagingFrame header h2,
+        .embeddedMessagingFrame .slds-chat-header span,
+        .embeddedMessagingFrame header span {
+            color: #FFFFFF !important;
+        }
+
+        /* Message Area */
+        .embeddedMessagingFrame .slds-chat-listitem,
+        .embeddedMessagingFrame .messageArea {
+            background-color: #000000 !important;
+        }
+
+        /* Sent Messages (Your messages) */
+        .embeddedMessagingFrame .slds-chat-message__text_outbound,
+        .embeddedMessagingFrame .messageContent.sent,
+        .embeddedMessagingFrame [data-message-type="outbound"] {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+        }
+
+        /* Received Messages (Agent messages) */
+        .embeddedMessagingFrame .slds-chat-message__text_inbound,
+        .embeddedMessagingFrame .messageContent.received,
+        .embeddedMessagingFrame [data-message-type="inbound"] {
+            background-color: #1A1A1A !important;
+            color: #FFFFFF !important;
+        }
+
+        /* Input Area */
+        .embeddedMessagingFrame .slds-chat-input,
+        .embeddedMessagingFrame .inputArea {
+            background-color: #000000 !important;
+            border-top: 1px solid #333333 !important;
+        }
+
+        /* Text Input */
+        .embeddedMessagingFrame input[type="text"],
+        .embeddedMessagingFrame textarea,
+        .embeddedMessagingFrame .slds-textarea {
+            background-color: #1A1A1A !important;
+            color: #FFFFFF !important;
+            border: 1px solid #333333 !important;
+        }
+
+        .embeddedMessagingFrame input[type="text"]:focus,
+        .embeddedMessagingFrame textarea:focus {
+            border-color: #FFFFFF !important;
+            outline: none !important;
+        }
+
+        /* Placeholder Text */
+        .embeddedMessagingFrame input::placeholder,
+        .embeddedMessagingFrame textarea::placeholder {
+            color: #666666 !important;
+        }
+
+        /* Send Button */
+        .embeddedMessagingFrame button[type="submit"],
+        .embeddedMessagingFrame .slds-button_brand,
+        .embeddedMessagingFrame .sendButton {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
+            border: none !important;
+        }
+
+        .embeddedMessagingFrame button[type="submit"]:hover,
+        .embeddedMessagingFrame .slds-button_brand:hover {
+            background-color: #EEEEEE !important;
+        }
+
+        /* All Buttons */
+        .embeddedMessagingFrame button,
+        .embeddedMessagingFrame .slds-button {
+            color: #FFFFFF !important;
+        }
+
+        /* Icons */
+        .embeddedMessagingFrame svg,
+        .embeddedMessagingFrame .slds-icon {
+            fill: #FFFFFF !important;
+        }
+
+        /* Minimize/Close Buttons */
+        .embeddedMessagingFrame .slds-button_icon,
+        .embeddedMessagingFrame button[title="Minimize"],
+        .embeddedMessagingFrame button[title="Close"] {
+            background-color: transparent !important;
+        }
+
+        .embeddedMessagingFrame .slds-button_icon:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        /* Timestamp */
+        .embeddedMessagingFrame .slds-chat-message__meta,
+        .embeddedMessagingFrame .timestamp {
+            color: #999999 !important;
+        }
+
+        /* Typing Indicator */
+        .embeddedMessagingFrame .slds-is-typing,
+        .embeddedMessagingFrame .typingIndicator {
+            color: #CCCCCC !important;
+        }
+
+        /* Scrollbar */
+        .embeddedMessagingFrame ::-webkit-scrollbar {
+            width: 8px;
+            background-color: #000000;
+        }
+
+        .embeddedMessagingFrame ::-webkit-scrollbar-track {
+            background-color: #000000;
+        }
+
+        .embeddedMessagingFrame ::-webkit-scrollbar-thumb {
+            background-color: #333333;
+            border-radius: 4px;
+        }
+
+        .embeddedMessagingFrame ::-webkit-scrollbar-thumb:hover {
+            background-color: #555555;
+        }
+
+        /* Pre-chat Form */
+        .embeddedMessagingFrame .slds-form-element__label,
+        .embeddedMessagingFrame label {
+            color: #FFFFFF !important;
+        }
+
+        .embeddedMessagingFrame .slds-form-element__control input {
+            background-color: #1A1A1A !important;
+            color: #FFFFFF !important;
+            border: 1px solid #333333 !important;
+        }
+
+        /* File Attachments */
+        .embeddedMessagingFrame .slds-file-selector,
+        .embeddedMessagingFrame .fileAttachment {
+            background-color: #1A1A1A !important;
+            border: 1px solid #333333 !important;
+        }
+
+        /* Emoji Picker */
+        .embeddedMessagingFrame .emojiPicker {
+            background-color: #1A1A1A !important;
+            border: 1px solid #333333 !important;
+        }
+
+        /* Links */
+        .embeddedMessagingFrame a {
+            color: #FFFFFF !important;
+            text-decoration: underline !important;
+        }
+
+        /* Dividers */
+        .embeddedMessagingFrame hr,
+        .embeddedMessagingFrame .slds-divider {
+            border-color: #333333 !important;
+        }
+
+        /* Loading Spinner */
+        .embeddedMessagingFrame .slds-spinner {
+            fill: #FFFFFF !important;
+        }
+
+        /* Error Messages */
+        .embeddedMessagingFrame .slds-text-color_error {
+            color: #FF6B6B !important;
+        }
+
+        /* Success Messages */
+        .embeddedMessagingFrame .slds-text-color_success {
+            color: #51CF66 !important;
+        }
+    </style>
 </head>
-
 <body>
-<h3>Chat Support – Forced Dark Mode</h3>
+    <div class="container">
+        <h1>Embedded Messaging - Dark Mode</h1>
+        <p>This page demonstrates Salesforce Embedded Messaging with full dark mode styling.</p>
+        <p>The chat button will appear in the bottom right corner. Click it to start chatting!</p>
+        
+        <h2 style="margin-top: 40px;">Features:</h2>
+        <ul style="line-height: 2;">
+            <li>✅ Pure black background (#000000)</li>
+            <li>✅ White text for readability</li>
+            <li>✅ White sent message bubbles</li>
+            <li>✅ Dark gray received message bubbles</li>
+            <li>✅ Emoji picker support</li>
+            <li>✅ File attachments support</li>
+            <li>✅ Typing indicators</li>
+            <li>✅ All Embedded Messaging features</li>
+        </ul>
+    </div>
 
-<script>
-/* =====================================================
-   INIT EMBEDDED MESSAGING
-===================================================== */
-function initEmbeddedMessaging() {
-  try {
-    embeddedservice_bootstrap.settings.language = 'en_US';
-
-    embeddedservice_bootstrap.init(
-      '00DDh0000003ik2',
-      'NA_Messaging_Chat',
-      'https://enphase--uat.sandbox.my.site.com/ESWNAMessagingChat1755609473327',
-      {
-        scrt2URL: 'https://enphase--uat.sandbox.my.salesforce-scrt.com'
-      }
-    );
-  } catch (e) {
-    console.error('Init error', e);
-  }
-}
-
-/* =====================================================
-   PRECHAT HIDDEN FIELDS
-===================================================== */
-function setHiddenPrechatFields() {
-  embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
-    Chat_Source: 'ENHO',
-    Persona: 'Homeowner',
-    Site_Type: 'Solar',
-    Referring_Site: 'ENHO Web',
-    Country: 'UK'
-  });
-}
-
-/* =====================================================
-   🔥 PRECHAT DARK MODE (SLDS TOKEN OVERRIDE)
-===================================================== */
-function injectPrechatDarkMode() {
-  const em = document.querySelector('embedded-messaging');
-  if (!em || !em.shadowRoot) return;
-
-  const prechat = em.shadowRoot.querySelector('embeddedmessaging-prechat-state');
-  if (!prechat || !prechat.shadowRoot) return;
-
-  if (prechat.shadowRoot.querySelector('#dark-prechat-style')) return;
-
-  console.log('🌙 Pre-chat SLDS dark mode applied');
-
-  const style = document.createElement('style');
-  style.id = 'dark-prechat-style';
-  style.textContent = `
-    /* 🔥 OVERRIDE SLDS BACKGROUND TOKENS (ROOT CAUSE FIX) */
-    :host {
-      --slds-g-color-neutral-base-100: #000000;
-      --slds-g-color-neutral-base-95:  #000000;
-      --slds-g-color-neutral-base-90:  #000000;
-      --slds-g-color-neutral-base-80:  #000000;
-
-      --slds-g-color-neutral-base-10:  #ffffff;
-      --slds-g-color-neutral-base-20:  #ffffff;
-      --slds-g-color-neutral-base-30:  #ffffff;
-    }
-
-    /* REMOVE WHITE PAINTED BACKGROUNDS */
-    .containerArea,
-    section,
-    article,
-    div,
-    lightning-layout,
-    lightning-layout-item,
-    lightning-card,
-    [class*="slds"] {
-      background: transparent !important;
-      color: #fff !important;
-    }
-
-    /* TEXT */
-    label, span, p, h1, h2, h3 {
-      color: #fff !important;
-    }
-
-    /* INPUTS */
-    input,
-    textarea,
-    select {
-      background: #000 !important;
-      color: #fff !important;
-      border: 1px solid #555 !important;
-    }
-
-    ::placeholder {
-      color: #aaa !important;
-    }
-
-    /* BUTTON */
-    button {
-      background: #111 !important;
-      color: #fff !important;
-      border: 1px solid #555 !important;
-    }
-  `;
-
-  prechat.shadowRoot.appendChild(style);
-}
-
-/* =====================================================
-   🔥 CHAT CONVERSATION DARK MODE
-===================================================== */
-function injectChatDarkMode() {
-  const em = document.querySelector('embedded-messaging');
-  if (!em || !em.shadowRoot) return;
-
-  if (em.shadowRoot.querySelector('#dark-chat-style')) return;
-
-  console.log('🌙 Chat dark mode applied');
-
-  const style = document.createElement('style');
-  style.id = 'dark-chat-style';
-  style.textContent = `
-    .embeddedMessagingConversation {
-      background: #000 !important;
-      color: #fff !important;
-    }
-
-    .embeddedMessagingHeader,
-    .embeddedMessagingHeader * {
-      background: #000 !important;
-      color: #fff !important;
-      border-bottom: 1px solid #222 !important;
-    }
-
-    .embeddedMessagingAgentMessage {
-      background: #111 !important;
-      color: #fff !important;
-    }
-
-    .embeddedMessagingUserMessage {
-      background: #222 !important;
-      color: #fff !important;
-    }
-
-    .embeddedMessagingComposer {
-      background: #000 !important;
-      border-top: 1px solid #222 !important;
-    }
-
-    input, textarea {
-      background: #000 !important;
-      color: #fff !important;
-      border: 1px solid #444 !important;
-    }
-
-    button, svg {
-      color: #fff !important;
-      fill: #fff !important;
-    }
-  `;
-
-  em.shadowRoot.appendChild(style);
-}
-
-/* =====================================================
-   RETRY UNTIL SALESFORCE FINISHES RENDERING
-===================================================== */
-const darkRetry = setInterval(() => {
-  injectPrechatDarkMode();
-  injectChatDarkMode();
-}, 500);
-
-setTimeout(() => clearInterval(darkRetry), 12000);
-
-/* =====================================================
-   READY EVENT
-===================================================== */
-window.addEventListener('onEmbeddedMessagingReady', () => {
-  console.log('✅ Embedded Messaging Ready');
-  setHiddenPrechatFields();
-});
-</script>
-
-<script
-  src="https://enphase--uat.sandbox.my.site.com/ESWNAMessagingChat1755609473327/assets/js/bootstrap.min.js"
-  onload="initEmbeddedMessaging()">
-</script>
-
+    <!-- Embedded Messaging SDK -->
+    <script type='text/javascript'>
+        function initEmbeddedMessaging() {
+            try {
+                // Configure language
+                embeddedservice_bootstrap.settings.language = 'en_US';
+                
+                // Set hidden pre-chat fields
+                embeddedservice_bootstrap.prechatAPI.setHiddenPrechatFields({
+                    Chat_Source: 'ENHO',
+                    Persona: 'Homeowner',
+                    Site_Type: 'Solar',
+                    Referring_Site: 'ENHO Web',
+                    Country: 'UK'
+                });
+                
+                // Initialize Embedded Messaging
+                embeddedservice_bootstrap.init(
+                    '00Dbf000005CU2f',
+                    'NA_English_Chat',
+                    'https://enphase--sbprashant.sandbox.my.site.com/ESWAPACChat1768372599053',
+                    {
+                        scrt2URL: 'https://enphase--sbprashant.sandbox.my.salesforce-scrt.com'
+                    }
+                );
+                
+                console.log('Embedded Messaging initialized successfully with hidden fields');
+            } catch (err) {
+                console.error('Error loading Embedded Messaging: ', err);
+            }
+        }
+    </script>
+    <script type='text/javascript' 
+            src='https://enphase--sbprashant.sandbox.my.site.com/ESWAPACChat1768372599053/assets/js/bootstrap.min.js' 
+            onload='initEmbeddedMessaging()'>
+    </script>
 </body>
 </html>
